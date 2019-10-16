@@ -71,6 +71,8 @@ list (APPEND FHQSRV_SOURCES "src/core/wsjcpp_export_libcli_web_js.h")
 list (APPEND FHQSRV_SOURCES "src/core/wsjcpp_export_libcli_web_js.cpp")
 list (APPEND FHQSRV_SOURCES "src/core/wsjcpp_validators.cpp")
 list (APPEND FHQSRV_SOURCES "src/core/wsjcpp_validators.h")
+list (APPEND FHQSRV_SOURCES "src/core/wsjcpp_employ_async_jobs.h")
+list (APPEND FHQSRV_SOURCES "src/core/wsjcpp_employ_async_jobs.cpp")
 
 # quazip
 list (APPEND FHQSRV_SOURCES "src/3rdParty/quazip-0.7.3/quazip/crypt.h")
