@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { HostBinding, Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { SpinnerService } from '../../services/spinner.service';
 import { FhqService } from '../../services/fhq.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,13 +11,19 @@ declare var fhq: any;
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
+
 export class ChatComponent implements OnInit, OnDestroy {
   dataList: Array<any> = [];
   errorMessage: string = null;
   subscription: any;
+  userNick: string = null;
   @ViewChild('yourMessage', { static: false }) yourMessage : ElementRef;
   @ViewChild('chatMessages', { static: true }) private chatMessages: ElementRef;
-  
+  @ViewChild('fs', { static: true }) fs: ElementRef;
+  @HostBinding('class.is-fullscreen') isFullscreen = false;
+  chatHeight: Number = 100;
+  isFullscreenEnabled: Boolean = false
+
   constructor(
     private _spinnerService: SpinnerService,
     private _cdr: ChangeDetectorRef,
@@ -29,6 +35,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.loadData();
     fhq.bind('chat', (m: any) => this.incomeChatMessage(m));
     this.subscription = this._fhq.changedState.subscribe(() => this.loadData());
+
+    this.chatHeightUpdate();
+    document.onfullscreenchange = (() => {
+      this.updateChatSize();
+    });
   }
 
   ngOnDestroy() {
@@ -44,6 +55,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       .done((r: any) => this.successResponse(r))
       .fail((err: any) => this.errorResponse(err));
     // 
+    if (this._fhq.isAuthorized) {
+      // console.log(this._fhq.userdata)
+      this.userNick = this._fhq.userdata.nick
+    } else {
+      this.userNick = null
+    }
+    // console.log(this._fhq);
   }
 
   sendMessage() {
@@ -76,10 +94,32 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatScrollToBottom();
   }
 
+  updateChatSize() {
+    setTimeout(() => {
+      this.isFullscreenEnabled = document.fullscreen
+      this.chatHeightUpdate()
+      this.chatScrollToBottom()
+    }, 500)
+  }
+
   chatScrollToBottom() {
     try {
       this.chatMessages.nativeElement.scrollTop = this.chatMessages.nativeElement.scrollHeight;
     } catch(err) { }   
+  }
+
+  chatHeightUpdate() {
+    if (!document.fullscreen) {
+      const navbarHeight = 62 
+      const footerHeight = 272 
+      const chatTitleHeight = 50
+      this.chatHeight = window.innerHeight - navbarHeight - footerHeight - chatTitleHeight - 180 
+    } else {
+      const chatTitleHeight = 50
+      this.chatHeight = window.innerHeight - chatTitleHeight - 100 
+    }
+    
+    console.log(this.chatHeight)
   }
 
   errorResponse(err: any) {
@@ -98,5 +138,41 @@ export class ChatComponent implements OnInit, OnDestroy {
   openDialogSignIn() {
     const modalRef = this._modalService.open(ModalDialogSignInComponent);
     modalRef.componentInstance.name = 'SignIn';
+  }
+
+  isFullsceen(): Boolean {
+    return document.fullscreen;
+  }
+
+  openFullscreen(): void {
+    const el = this.fs.nativeElement;
+    if (!document.fullscreenElement &&    // alternative standard method
+      !document['mozFullScreenElement'] && !document['webkitFullscreenElement']) {  // current working methods
+      if (el.requestFullscreen) {
+        el.requestFullscreen();
+      } else if (el.mozRequestFullScreen) {
+        el.mozRequestFullScreen();
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen((<any>Element).ALLOW_KEYBOARD_INPUT);
+      } else if (el.msRequestFullscreen) {
+        el.msRequestFullscreen();
+      }
+    }
+
+    this.updateChatSize()
+  }
+
+  closeFullscreen(): void {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document['msExitFullscreen']) {
+      document['msExitFullscreen']();
+    } else if (document['mozCancelFullScreen']) {
+      document['mozCancelFullScreen']();
+    } else if (document['webkitExitFullscreen']) {
+      document['webkitExitFullscreen']();
+    }
+
+    this.updateChatSize()
   }
 }

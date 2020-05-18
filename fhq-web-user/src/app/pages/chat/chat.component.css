@@ -1,7 +1,194 @@
-.chat-messages {
-    height: 350px;
-    overflow-y: scroll;
-    border: 1px solid rgba(0,0,0,.125);
+
+
+
+
+.chat-page {
+    display: table;
+    background-color: #0f1a33;
+    color: #6296c6;
+    height: 100px;
+    width: calc(100% - 4px);
+    border: 2px solid #2396c6;
     border-radius: 4px;
-    padding: 10px;
+}
+
+.chat-page:fullscreen {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.chat-page-header-row {
+    display: table-row;
+    border: 2px solid #2396c6;
+    height: 50px;
+}
+
+.chat-page-header-cell {
+    display: table-cell;
+    vertical-align: middle;
+    border-bottom: 2px solid #2396c6;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: static;
+    padding-top: 10px;
+}
+
+.chat-page-title {
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    vertical-align: top;
+    width: calc(100% - 100px);
+}
+
+.chat-page-actions {
+    display: inline-block;
+    position: static;
+    right: 0px;
+    height: 25px;
+    width: 100px;
+    text-align: right;
+}
+
+.chat-page-action-open-fullscreen {
+    height: 25px;
+    width: 25px;
+    background-image: url("../../../assets/img/chat/chat-fullscreen.png");
+    background-size: 100%;
+    background-position: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.chat-page-action-close-fullscreen {
+    height: 25px;
+    width: 25px;
+    background-image: url("../../../assets/img/chat/chat-close-fullscreen.png");
+    background-size: 100%;
+    background-position: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.chat-page-content-row {
+    display: table-row;
+    height: calc(100% - 50px);
+}
+
+.chat-page-content-table {
+    display: table;
+    width: 100%;
+    
+}
+
+.chat-page:fullscreen .chat-page-content-table {
+    height: 100%;
+}
+
+.chat-page-content-table-row {
+    display: table-row;
+}
+
+.chat-users-dialogs {
+    display: table-cell;
+    width: 200px;
+    min-width: 100px;
+    padding-left: 10px;
+    border-right: 2px solid #2396c6;
+    vertical-align: top;
+}
+
+.chat-users-messages {
+    display: table-cell;
+    height: 100%;
+}
+
+.chat-page:fullscreen .chat-users-messages {
+    height: 100%;
+}
+
+.chat-users-messages-table {
+    display: table;
+    width: 100%;
+}
+
+.chat-users-messages-table-row-messages {
+    display: table-row;
+    height: 100%;
+    max-height: calc(100% - 100px);
+}
+
+.chat-users-messages-table-cell-messages {
+    display: table-cell;
+    max-height: calc(100% - 100px);
+}
+
+.scrollable {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+.chat-users-messages-table-row-send-message {
+    display: table-row;
+    height: 100px;
+    max-height: 100px;
+}
+
+.chat-users-messages-table-cell-send-message {
+    display: table-cell;
+    border-top: 2px solid #2396c6;
+    height: 100px;
+    vertical-align: middle;
+}
+
+.chat-page:fullscreen .chat-messages-table {
+    height: calc(100% - 100px);
+    max-height: calc(100% - 100px);
+}
+
+.chat-messages-table-row {
+    display: block;
+    max-width: 100%;
+}
+
+.chat-users-online {
+    display: table-cell;
+    width: 200px;
+    min-width: 200px;
+    padding-left: 10px;
+    border-left: 2px solid #2396c6;
+    vertical-align: top;
+}
+
+.chat-user-nick {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+.chat-send-message-input {
+    background-color: #0f1a33;
+    color: #2396c6;
+    border: 0px;
+}
+
+.chat-send-message-btn {
+    height: 25px;
+    width: 25px;
+    margin-left: 10px;
+    background-image: url("../../../assets/img/chat/icon-send-message.png");
+    background-size: 100%;
+    background-position: center;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.chat-send-message-error {
+    display: block;
 }
